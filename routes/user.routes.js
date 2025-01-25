@@ -32,7 +32,7 @@ router.post("/signup", async (req, res) => {
   try {
     const foundUser = await User.findOne({ email });
     if (foundUser) {
-      res.status(400).json({ message: "User already exists." });
+      return res.status(400).json({ message: "User already exists." });
     }
     const salt = bcrypt.genSaltSync(saltRounds);
     const hashedPassword = bcrypt.hashSync(password, salt);
@@ -75,7 +75,7 @@ router.post("/login", async (req, res) => {
       res.status(403).json({ message: "Unable to authenticate the user." });
     }
   } catch (error) {
-    console.log(error);
+    console.log("Error logging in the user:", error);
     res.status(500).json({ message: "Error logging in the user." });
   }
 });
@@ -84,6 +84,54 @@ router.post("/login", async (req, res) => {
 router.get("/verify", isAuthenticated, (req, res) => {
   console.log("req.payload", req.payload);
   res.status(200).json(req.payload);
+});
+
+//get all users
+router.get("/users", async (req, res) => {
+  try {
+    const users = await User.find().populate();
+    console.log("Found users", users);
+    res.status(200).json(users);
+  } catch (error) {
+    console.log("Error getting all users:", error);
+    res.status(500).json({ message: "Error getting all users." });
+  }
+});
+
+//get one user by id
+router.get("/users/:userId", async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const user = await User.findById(userId);
+    res.status(200).json(user);
+  } catch (error) {
+    console.log("Error getting the user:", error);
+    res.status(500).json({ message: "Error getting the user." });
+  }
+});
+
+//update one user
+router.put("/users/:userId", async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const user = await User.findByIdAndUpdate(userId, req.body, { new: true });
+    res.status(200).json(user);
+  } catch (error) {
+    console.log("Error updating the user:", error);
+    res.status(500).json({ message: "Error updating the user." });
+  }
+});
+
+//delete one user by id
+router.delete("/users/:userId", async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const user = await User.findByIdAndDelete(userId);
+    res.status(200).json(user);
+  } catch (error) {
+    console.log("Error deleting the user:", error);
+    res.status(500).json({ message: "Error deleting the user." });
+  }
 });
 
 module.exports = router;

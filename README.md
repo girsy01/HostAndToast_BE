@@ -25,26 +25,26 @@ The API offers a variety of routes to work with _user_, _meal_ and _rating_ docu
 
 #### Address routes
 
-| HTTP verb | URL                         | Request body | Action                                                              |
-| --------- | --------------------------- | ------------ | ------------------------------------------------------------------- |
-| GET       | `/api/addresses`            | (empty)      | Returns all the addresses in JSON format                            |
-| GET       | `/api/addresses/:addressId` | (empty)      | Returns the specified address by id                                 |
-| POST      | `/api/addresses`            | JSON         | Creates a new address **and adds the reference to the user object** |
-| PUT       | `/api/addresses/:addressId` | JSON         | Updates the specified address by id                                 |
-| DELETE    | `/api/addresses/:addressId` | (empty)      | Deletes the specified address by id                                 |
+| HTTP verb | URL                            | Request body | Action                                                              |
+| --------- | ------------------------------ | ------------ | ------------------------------------------------------------------- |
+| GET       | `/api/addresses`               | (empty)      | Returns all the addresses in JSON format                            |
+| GET       | `/api/addresses/:addressId`    | (empty)      | Returns the specified address by id                                 |
+| POST      | `/api/addresses/users/:userId` | JSON         | Creates a new address **and adds the reference to the user object** |
+| PUT       | `/api/addresses/:addressId`    | JSON         | Updates the specified address by id                                 |
+| DELETE    | `/api/addresses/:addressId`    | (empty)      | Deletes the specified address by id                                 |
 
 <br>
 
 #### Meal routes
 
-| HTTP verb | URL                       | Request body | Action                                                   |
-| --------- | ------------------------- | ------------ | -------------------------------------------------------- |
-| GET       | `/api/meals`              | (empty)      | Returns all the meals in JSON format                     |
-| GET       | `/api/meals/user/:userId` | (empty)      | Returns all the meals of a specified user in JSON format |
-| GET       | `/api/meals/:mealId`      | (empty)      | Returns the specified meal by id                         |
-| POST      | `/api/meals`              | JSON         | Creates a new meal **with its respective user id**       |
-| PUT       | `/api/meals/:mealId`      | JSON         | Updates the specified meal by id                         |
-| DELETE    | `/api/meals/:mealId`      | (empty)      | Deletes the specified meal by id                         |
+| HTTP verb | URL                        | Request body | Action                                                   |
+| --------- | -------------------------- | ------------ | -------------------------------------------------------- |
+| GET       | `/api/meals`               | (empty)      | Returns all the meals in JSON format                     |
+| GET       | `/api/meals/:mealId`       | (empty)      | Returns the specified meal by id                         |
+| GET       | `/api/meals/users/:userId` | (empty)      | Returns all the meals of a specified user in JSON format |
+| POST      | `/api/meals`               | JSON         | Creates a new meal **with its respective user id**       |
+| PUT       | `/api/meals/:mealId`       | JSON         | Updates the specified meal by id                         |
+| DELETE    | `/api/meals/:mealId`       | (empty)      | Deletes the specified meal by id                         |
 
 <br>
 
