@@ -23,6 +23,18 @@ The API offers a variety of routes to work with _user_, _meal_ and _rating_ docu
 
 <br>
 
+#### Address routes
+
+| HTTP verb | URL                         | Request body | Action                                                              |
+| --------- | --------------------------- | ------------ | ------------------------------------------------------------------- |
+| GET       | `/api/addresses`            | (empty)      | Returns all the addresses in JSON format                            |
+| GET       | `/api/addresses/:addressId` | (empty)      | Returns the specified address by id                                 |
+| POST      | `/api/addresses`            | JSON         | Creates a new address **and adds the reference to the user object** |
+| PUT       | `/api/addresses/:addressId` | JSON         | Updates the specified address by id                                 |
+| DELETE    | `/api/addresses/:addressId` | (empty)      | Deletes the specified address by id                                 |
+
+<br>
+
 #### Meal routes
 
 | HTTP verb | URL                       | Request body | Action                                                   |
@@ -57,17 +69,28 @@ The _Models_ section holds information about the data models for your database. 
 
 #### User model
 
-| field         | data type  | description                                                                                          |
-| ------------- | ---------- | ---------------------------------------------------------------------------------------------------- |
-| `username`    | _`String`_ | unique identifier for the user. required.                                                            |
-| `email`       | _`String`_ | email of the cohort. required. unique.                                                               |
-| `password`    | _`String`_ | password of that user. encrypted. required.                                                          |
-| `address`     | _`object`_ | attributes: `street` of type _`String`_, `houseNumber` of type _`String`_, `PLZ` of type _`Number`_. |
-| `longitude`   | _`Number`_ | Longitude of Location.                                                                               |
-| `latitude`    | _`Date`_   | Latitude of Location                                                                                 |
-| `imageUrl`    | _`String`_ | URL of profile image.                                                                                |
-| `description` | _`String`_ | Description of user.                                                                                 |
-| `specialty`   | _`String`_ | Specialty in cooking of user.                                                                        |
+| field         | data type    | description                                 |
+| ------------- | ------------ | ------------------------------------------- |
+| `username`    | _`String`_   | Unique identifier for the user. required.   |
+| `email`       | _`String`_   | Email of the cohort. required. unique.      |
+| `password`    | _`String`_   | Password of that user. encrypted. required. |
+| `address`     | _`ObjectId`_ | Reference to address.                       |
+| `imageUrl`    | _`String`_   | URL of profile image.                       |
+| `description` | _`String`_   | Description of user.                        |
+| `specialty`   | _`String`_   | Specialty in cooking of user.               |
+
+<br>
+
+#### Address Model
+
+| Field         | Data Type  | Description             |
+| ------------- | ---------- | ----------------------- |
+| `street`      | _`String`_ | Street name. Required.  |
+| `houseNumber` | _`String`_ | House number. Required. |
+| `plz`         | _`Number`_ | PLZ. Required.          |
+| `city`        | _`String`_ | City. Required.         |
+| `long`        | _`Number`_ | Longitude of Location.  |
+| `lat`         | _`Number`_ | Latitude of Location    |
 
 <br>
 
