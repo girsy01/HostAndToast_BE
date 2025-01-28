@@ -22,10 +22,13 @@ const userRoutes = require("./routes/user.routes");
 app.use("/auth", userRoutes);
 
 const addressRoutes = require("./routes/address.routes");
-app.use("/api", addressRoutes);
+app.use("/api/addresses", addressRoutes);
 
 const mealRoutes = require("./routes/meal.routes");
-app.use("/api", mealRoutes);
+app.use("/api/meals", mealRoutes);
+
+const ratingRoutes = require("./routes/rating.routes");
+app.use("/api/ratings", ratingRoutes);
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);

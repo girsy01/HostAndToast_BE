@@ -4,7 +4,7 @@ const User = require("../models/User.model");
 const router = require("express").Router();
 
 //get all meals
-router.get("/meals", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const meals = await Meal.find();
     res.status(200).json(meals);
@@ -15,7 +15,7 @@ router.get("/meals", async (req, res) => {
 });
 
 //get one meal by id
-router.get("/meals/:mealId", async (req, res) => {
+router.get("/:mealId", async (req, res) => {
   const { mealId } = req.params;
   try {
     const meal = await Meal.findById(mealId);
@@ -27,7 +27,7 @@ router.get("/meals/:mealId", async (req, res) => {
 });
 
 //get all meals for one specific user
-router.get("/meals/users/:userId", async (req, res) => {
+router.get("/users/:userId", async (req, res) => {
   const { userId } = req.params;
   try {
     const meals = await Meal.find();
@@ -42,7 +42,7 @@ router.get("/meals/users/:userId", async (req, res) => {
 });
 
 //create a new meal
-router.post("/meals", async (req, res) => {
+router.post("", async (req, res) => {
   try {
     const meal = await Meal.create(req.body);
     res.status(201).json(meal);
@@ -53,7 +53,7 @@ router.post("/meals", async (req, res) => {
 });
 
 //update a meal by id
-router.put("/meals/:mealId", async (req, res) => {
+router.put("/:mealId", async (req, res) => {
   const { mealId } = req.params;
   try {
     const mealUpdated = await Meal.findByIdAndUpdate(mealId, req.body, { new: true });
@@ -65,7 +65,7 @@ router.put("/meals/:mealId", async (req, res) => {
 });
 
 //delete a meal by id
-router.delete("/meals/:mealId", async (req, res) => {
+router.delete("/:mealId", async (req, res) => {
   const { mealId } = req.params;
   try {
     const deletedMail = await Meal.findByIdAndDelete(mealId);

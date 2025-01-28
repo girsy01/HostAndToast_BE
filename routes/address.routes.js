@@ -4,7 +4,7 @@ const User = require("../models/User.model");
 const router = require("express").Router();
 
 //get all addresses
-router.get("/addresses", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const addresses = await Address.find();
     res.status(200).json(addresses);
@@ -15,7 +15,7 @@ router.get("/addresses", async (req, res) => {
 });
 
 //get one address by id
-router.get("/addresses/:addId", async (req, res) => {
+router.get("/:addId", async (req, res) => {
   const { addId } = req.params;
   try {
     const address = await Address.findById(addId);
@@ -27,7 +27,7 @@ router.get("/addresses/:addId", async (req, res) => {
 });
 
 //create a new address and link it to the user
-router.post("/addresses/users/:userId", async (req, res) => {
+router.post("/users/:userId", async (req, res) => {
   const { userId } = req.params;
   try {
     const address = await Address.create(req.body);
@@ -42,7 +42,7 @@ router.post("/addresses/users/:userId", async (req, res) => {
 });
 
 //update a address by id
-router.put("/addresses/:addressId", async (req, res) => {
+router.put("/:addressId", async (req, res) => {
   const { addressId } = req.params;
   try {
     const addressUpdated = await Address.findByIdAndUpdate(addressId, req.body, { new: true });
@@ -54,7 +54,7 @@ router.put("/addresses/:addressId", async (req, res) => {
 });
 
 //delete a address by id
-router.delete("/addresses/:addressId", async (req, res) => {
+router.delete("/:addressId", async (req, res) => {
   const { addressId } = req.params;
   try {
     const deletedAddress = await Address.findByIdAndDelete(addressId);

@@ -50,14 +50,14 @@ The API offers a variety of routes to work with _user_, _meal_ and _rating_ docu
 
 #### Rating routes
 
-| HTTP verb | URL                         | Request body | Action                                                     |
-| --------- | --------------------------- | ------------ | ---------------------------------------------------------- |
-| GET       | `/api/ratings`              | (empty)      | Returns all the ratings in JSON format                     |
-| GET       | `/api/ratings/meal/:mealId` | (empty)      | Returns all the ratings of a specified meal in JSON format |
-| GET       | `/api/ratings/:ratingId`    | (empty)      | Returns the specified meal by id                           |
-| POST      | `/api/ratings`              | JSON         | Creates a new rating **with its respective meal id**       |
-| PUT       | `/api/ratings/:ratingId`    | JSON         | Updates the specified rating by id                         |
-| DELETE    | `/api/ratings/:ratingId`    | (empty)      | Deletes the specified rating by id                         |
+| HTTP verb | URL                          | Request body | Action                                                     |
+| --------- | ---------------------------- | ------------ | ---------------------------------------------------------- |
+| GET       | `/api/ratings`               | (empty)      | Returns all the ratings in JSON format                     |
+| GET       | `/api/ratings/:ratingId`     | (empty)      | Returns the specified meal by id                           |
+| GET       | `/api/ratings/meals/:mealId` | (empty)      | Returns all the ratings of a specified meal in JSON format |
+| POST      | `/api/ratings`               | JSON         | Creates a new rating **with its respective meal id**       |
+| PUT       | `/api/ratings/:ratingId`     | JSON         | Updates the specified rating by id                         |
+| DELETE    | `/api/ratings/:ratingId`     | (empty)      | Deletes the specified rating by id                         |
 
 <br>
 
