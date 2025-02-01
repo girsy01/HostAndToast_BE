@@ -6,7 +6,13 @@ const router = require("express").Router();
 //get all meals
 router.get("/", async (req, res) => {
   try {
-    const meals = await Meal.find();
+    const meals = await Meal.find().populate({
+      path: "user",
+      populate: {
+        path: "address", // Assuming 'address' is a reference in the User model
+        model: "Address", // Replace with the actual model name if needed
+      },
+    });
     res.status(200).json(meals);
   } catch (error) {
     console.log("Error getting all meals:", error);

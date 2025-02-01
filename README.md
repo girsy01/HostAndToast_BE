@@ -83,14 +83,11 @@ The _Models_ section holds information about the data models for your database. 
 
 #### Address Model
 
-| Field         | Data Type  | Description             |
-| ------------- | ---------- | ----------------------- |
-| `street`      | _`String`_ | Street name. Required.  |
-| `houseNumber` | _`String`_ | House number. Required. |
-| `plz`         | _`Number`_ | PLZ. Required.          |
-| `city`        | _`String`_ | City. Required.         |
-| `long`        | _`Number`_ | Longitude of Location.  |
-| `lat`         | _`Number`_ | Latitude of Location    |
+| Field         | Data Type  | Description                                     |
+| ------------- | ---------- | ----------------------------------------------- |
+| `displayName` | _`String`_ | Display name coming from leaflet api. Required. |
+| `long`        | _`Number`_ | Longitude of Location.                          |
+| `lat`         | _`Number`_ | Latitude of Location                            |
 
 <br>
 
@@ -108,6 +105,7 @@ The _Models_ section holds information about the data models for your database. 
 | `date`         | _`Date`_             | Date for pickup/hosted.             |
 | `user`         | _`ObjectId`_         | Reference to user. Required.        |
 | `imageUrl`     | _`String`_           | URL of image.                       |
+| `price`        | _`Number`_           | Price of the meal.                  |
 
 <br>
 

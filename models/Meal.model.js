@@ -15,16 +15,30 @@ const mealSchema = new Schema(
       required: [true, "Description is required."],
     },
     allergies: [String],
-    plates: Number,
+    plates: {
+      type: Number,
+      required: [true, "Plates is required."],
+    },
     hosted: Boolean,
     completeMeal: Boolean,
-    date: Date,
+    pickupTime: {
+      type: Date,
+      required: [true, "Pickup time is required."],
+    },
     user: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: [true, "User is required."],
     },
-    imageUrl: String,
+    imageUrl: {
+      type: String,
+      //TODO: change default image if we want to
+      default: "https://cdn.midjourney.com/1671c6ab-9fde-4fd0-a475-344758cc84d2/0_1.png",
+    },
+    price: {
+      type: Number,
+      required: [true, "Price is required."],
+    },
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`

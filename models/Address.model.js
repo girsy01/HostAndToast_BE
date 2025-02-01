@@ -2,21 +2,9 @@ const { Schema, model } = require("mongoose");
 
 const addressSchema = new Schema(
   {
-    street: {
+    displayName: {
       type: String,
-      required: [true, "Street is required."],
-    },
-    houseNumber: {
-      type: String,
-      required: [true, "House number is required."],
-    },
-    plz: {
-      type: Number,
-      required: [true, "PLZ is required."],
-    },
-    city: {
-      type: String,
-      required: [true, "City is required."],
+      required: [true, "Display name is required."],
     },
     long: Number,
     lat: Number,
