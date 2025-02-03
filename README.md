@@ -61,6 +61,14 @@ The API offers a variety of routes to work with _user_, _meal_ and _rating_ docu
 
 <br>
 
+#### Index routes
+
+| HTTP verb | URL                     | Request body | Action                                        |
+| --------- | ----------------------- | ------------ | --------------------------------------------- |
+| POST      | `/api/multiple-uploads` | JSON         | Uploads imgs on Cloudinary and return the URL |
+
+<br>
+
 ## Models
 
 The _Models_ section holds information about the data models for your database. It outlines the structure of the documents in the database, providing you with a clear understanding of how your data should be organized.
