@@ -33,7 +33,7 @@ router.get("/:mealId", async (req, res) => {
 });
 
 //get all meals for one specific user
-router.get("/users/:userId", async (req, res) => {
+router.get("/user/:userId", async (req, res) => {
   const { userId } = req.params;
   try {
     const meals = await Meal.find();
@@ -62,7 +62,9 @@ router.post("", async (req, res) => {
 router.put("/:mealId", async (req, res) => {
   const { mealId } = req.params;
   try {
-    const mealUpdated = await Meal.findByIdAndUpdate(mealId, req.body, { new: true });
+    const mealUpdated = await Meal.findByIdAndUpdate(mealId, req.body, {
+      new: true,
+    });
     res.status(201).json(mealUpdated);
   } catch (error) {
     console.log("Error updating the meal:", error);
