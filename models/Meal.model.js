@@ -30,14 +30,12 @@ const mealSchema = new Schema(
       ref: "User",
       required: [true, "User is required."],
     },
-    imageUrl: [
-      {
-        type: String,
-        //TODO: change default image if we want to
-        default:
-          "https://cdn.midjourney.com/1671c6ab-9fde-4fd0-a475-344758cc84d2/0_1.png",
-      },
-    ],
+    imageUrl: {
+      type: [String],
+      //TODO: change default image if we want to
+      default: ["https://cdn.midjourney.com/1671c6ab-9fde-4fd0-a475-344758cc84d2/0_1.png"],
+    },
+
     price: {
       type: Number,
       required: [true, "Price is required."],
