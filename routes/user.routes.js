@@ -41,9 +41,7 @@ router.post("/signup", async (req, res) => {
       username,
       password: hashedPassword,
     });
-    res
-      .status(201)
-      .json({ message: "User created", user: { username, email } });
+    res.status(201).json({ message: "User created", user: { username, email } });
   } catch (error) {
     console.log("Error when creating user:", error);
     res.status(500).json({ message: "Error creating user." });
@@ -105,7 +103,7 @@ router.get("/users", async (req, res) => {
 });
 
 //get one user by id
-router.get("/user/:userId", async (req, res) => {
+router.get("/users/:userId", async (req, res) => {
   const { userId } = req.params;
   try {
     const user = await User.findById(userId).populate("address");
@@ -118,7 +116,7 @@ router.get("/user/:userId", async (req, res) => {
 });
 
 //update one user
-router.put("/user/:userId", async (req, res) => {
+router.put("/users/:userId", async (req, res) => {
   const { userId } = req.params;
   try {
     const user = await User.findByIdAndUpdate(userId, req.body, { new: true });
@@ -130,7 +128,7 @@ router.put("/user/:userId", async (req, res) => {
 });
 
 //delete one user by id
-router.delete("/user/:userId", async (req, res) => {
+router.delete("/users/:userId", async (req, res) => {
   const { userId } = req.params;
   try {
     const user = await User.findByIdAndDelete(userId);
