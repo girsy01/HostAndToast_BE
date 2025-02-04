@@ -112,7 +112,7 @@ The _Models_ section holds information about the data models for your database. 
 | `completeMeal` | _`Boolean`_          | Complete meal or single ingredient. |
 | `date`         | _`Date`_             | Date for pickup/hosted.             |
 | `user`         | _`ObjectId`_         | Reference to user. Required.        |
-| `imageUrl`     | _`String`_           | URL of image.                       |
+| `imageUrl`     | _`Array`_ of Strings | URL of image.                       |
 | `price`        | _`Number`_           | Price of the meal.                  |
 
 <br>
