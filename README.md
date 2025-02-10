@@ -21,6 +21,15 @@ The API offers a variety of routes to work with _user_, _meal_ and _rating_ docu
 | PUT       | `/auth/user/:userId`         | JSON         | Updates the specified user by id                               |
 | DELETE    | `/auth/user/:userId`         | (empty)      | Deletes the specified user by id                               |
 | GET       | `/auth/users/rating/:userId` | (empty)      | Get the average rating for the user                            |
+| HTTP verb | URL                          | Request body | Action                                                         |
+| --------- | ---------------------        | ------------ | -------------------------------------------------------------- |
+| POST      | `/auth/signup`               | JSON         | Creates a new user                                             |
+| POST      | `/auth/login`                | JSON         | Logges the user in and generates JWT Token                     |
+| GET       | `/auth/verify`               | (empty)      | Verifies the users JWT token, which is **sent in the headers** |
+| GET       | `/auth/users`                | (empty)      | Returns all the users in JSON format                           |
+| GET       | `/auth/users/:userId`        | (empty)      | Returns the specified user by id                               |
+| PUT       | `/auth/users/:userId`        | JSON         | Updates the specified user by id                               |
+| DELETE    | `/auth/users/:userId`        | (empty)      | Deletes the specified user by id                               |
 
 <br>
 

@@ -1,6 +1,7 @@
 const User = require("../models/User.model");
 const Rating = require("../models/Rating.model");
 const Meal = require("../models/Meal.model");
+const Address = require("../models/Address.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const isAuthenticated = require("../middlewares/jwt.middleware");
@@ -120,9 +121,32 @@ router.get("/users/:userId", async (req, res) => {
 //update one user
 router.put("/users/:userId", async (req, res) => {
   const { userId } = req.params;
+  const { address, ...userData } = req.body;
+
   try {
-    const user = await User.findByIdAndUpdate(userId, req.body, { new: true });
-    res.status(200).json(user);
+    // If address is provided, update or create it
+    let updatedAddress;
+    if (address) {
+      if (address._id) {
+        // Update the existing address
+        updatedAddress = await Address.findByIdAndUpdate(address._id, address, {
+          new: true,
+        });
+      } else {
+        // Create a new address
+        updatedAddress = new Address(address);
+        await updatedAddress.save();
+      }
+    }
+
+    // Update the user document with new address (if updated) and other fields
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { ...userData, ...(updatedAddress && { address: updatedAddress._id }) },
+      { new: true }
+    ).populate("address"); // Populate the address for full details
+
+    res.status(200).json(updatedUser);
   } catch (error) {
     console.log("Error updating the user:", error);
     res.status(500).json({ message: "Error updating the user." });
