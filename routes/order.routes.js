@@ -41,7 +41,6 @@ router.get("/user/:userId", async (req, res) => {
 });
 
 //create a new order
-//Tested
 router.post("", async (req, res) => {
   try {
     //We first update the Meal to reduce the no of plates
@@ -79,7 +78,6 @@ router.put("/:orderId", async (req, res) => {
 });
 
 //delete a order by id
-//Tested
 router.delete("/:orderId", async (req, res) => {
   const { orderId } = req.params;
   try {

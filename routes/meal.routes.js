@@ -101,8 +101,8 @@ router.put("/:mealId", async (req, res) => {
 router.delete("/:mealId", async (req, res) => {
   const { mealId } = req.params;
   try {
-    const deletedMail = await Meal.findByIdAndDelete(mealId);
-    res.status(200).json(deletedMail);
+    const deletedMeal = await Meal.findByIdAndDelete(mealId);
+    res.status(200).json(deletedMeal);
   } catch (error) {
     console.log("Error deleting the meal:", error);
     res.status(500).json({ message: "Error deleting the meal." });
