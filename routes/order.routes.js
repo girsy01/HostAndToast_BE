@@ -40,6 +40,35 @@ router.get("/user/:userId", async (req, res) => {
   }
 });
 
+//get all statistics for chef
+router.get("/chef-stats/:userId", async (req, res) => {
+  const { userId } = req.params;
+  try {
+    // Fetch all meals by the chef
+    const chefMeals = await Meal.find({ user: userId });
+    // Extract meal IDs to fetch related orders
+    const chefMealIds = chefMeals.map((meal) => meal._id);
+
+    //Fetch all the completed orders of the Chef
+    const chefOrders = await Order.find({
+      status: "FINISHED",
+      meal: { $in: chefMealIds },
+    });
+
+    const platesServed = chefOrders.length;
+    const totalRevenue = chefOrders.reduce((a, c) => {
+      return a + c.price;
+    }, 0);
+
+    res
+      .status(200)
+      .json({ platesServed: platesServed, totalRevenue: totalRevenue });
+  } catch (error) {
+    console.log("Error getting the orders:", error);
+    res.status(500).json({ message: "Error getting the orders." });
+  }
+});
+
 //create a new order
 router.post("", async (req, res) => {
   try {

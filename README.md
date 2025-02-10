@@ -73,14 +73,15 @@ The API offers a variety of routes to work with _user_, _meal_ and _rating_ docu
 
 #### Order routes
 
-| HTTP verb | URL                        | Request body | Action                                                                                      |
-| --------- | -------------------------- | ------------ | ------------------------------------------------------------------------------------------- |
-| GET       | `/api/orders`              | (empty)      | Returns all the orders in JSON format                                                       |
-| GET       | `/api/orders/:orderId`     | (empty)      | Returns the specified order by id                                                           |
-| GET       | `/api/orders/user/:userId` | (empty)      | Returns all the orders of a specified user in JSON format                                   |
-| POST      | `/api/orders`              | JSON         | Creates a new order **w.r.t user id & meal id. Updates the meal Model for leftover plates** |
-| PUT       | `/api/orders/:orderId`     | JSON         | Updates the specified order by id                                                           |
-| DELETE    | `/api/orders/:orderId`     | (empty)      | Deletes the specified order by id                                                           |
+| HTTP verb | URL                              | Request body | Action                                                                                      |
+| --------- | -------------------------------- | ------------ | ------------------------------------------------------------------------------------------- |
+| GET       | `/api/orders`                    | (empty)      | Returns all the orders in JSON format                                                       |
+| GET       | `/api/orders/:orderId`           | (empty)      | Returns the specified order by id                                                           |
+| GET       | `/api/orders/user/:userId`       | (empty)      | Returns all the orders of a specified user in JSON format                                   |
+| GET       | `/api/orders/chef-stats/:userId` | (empty)      | Returns all the orders states of a specified user in JSON format                            |
+| POST      | `/api/orders`                    | JSON         | Creates a new order **w.r.t user id & meal id. Updates the meal Model for leftover plates** |
+| PUT       | `/api/orders/:orderId`           | JSON         | Updates the specified order by id                                                           |
+| DELETE    | `/api/orders/:orderId`           | (empty)      | Deletes the specified order by id                                                           |
 
 <br>
 
