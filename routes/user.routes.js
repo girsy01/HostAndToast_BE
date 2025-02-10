@@ -1,4 +1,6 @@
 const User = require("../models/User.model");
+const Rating = require("../models/Rating.model");
+const Meal = require("../models/Meal.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const isAuthenticated = require("../middlewares/jwt.middleware");
@@ -136,6 +138,28 @@ router.delete("/users/:userId", async (req, res) => {
   } catch (error) {
     console.log("Error deleting the user:", error);
     res.status(500).json({ message: "Error deleting the user." });
+  }
+});
+
+router.get("/users/rating/:userId", async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const mealsOfUser = await Meal.find({ user: userId });
+    // console.log("mealsOfUser:", mealsOfUser);
+    const ratings = [];
+    for (let i = 0; i < mealsOfUser.length; i++) {
+      const mealId = mealsOfUser[i]._id;
+      const ratingsOfMeal = await Rating.find({ meal: mealId });
+      ratings.push(...ratingsOfMeal);
+    }
+    // console.log("ratings:", ratings);
+    const averageRating = ratings.reduce((acc, rating) => acc + rating.stars, 0) / ratings.length;
+    const numberOfRatings = ratings.length;
+    // console.log("averageRating:", averageRating);
+    res.status(200).json({ averageRating, numberOfRatings });
+  } catch (error) {
+    console.log("Error getting the users rating:", error);
+    res.status(500).json({ message: "Error getting the users rating." });
   }
 });
 

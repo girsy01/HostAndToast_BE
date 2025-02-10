@@ -11,15 +11,16 @@ The API offers a variety of routes to work with _user_, _meal_ and _rating_ docu
 
 #### User routes
 
-| HTTP verb | URL                  | Request body | Action                                                         |
-| --------- | -------------------- | ------------ | -------------------------------------------------------------- |
-| POST      | `/auth/signup`       | JSON         | Creates a new user                                             |
-| POST      | `/auth/login`        | JSON         | Logges the user in and generates JWT Token                     |
-| GET       | `/auth/verify`       | (empty)      | Verifies the users JWT token, which is **sent in the headers** |
-| GET       | `/auth/users`        | (empty)      | Returns all the users in JSON format                           |
-| GET       | `/auth/user/:userId` | (empty)      | Returns the specified user by id                               |
-| PUT       | `/auth/user/:userId` | JSON         | Updates the specified user by id                               |
-| DELETE    | `/auth/user/:userId` | (empty)      | Deletes the specified user by id                               |
+| HTTP verb | URL                          | Request body | Action                                                         |
+| --------- | ---------------------------- | ------------ | -------------------------------------------------------------- |
+| POST      | `/auth/signup`               | JSON         | Creates a new user                                             |
+| POST      | `/auth/login`                | JSON         | Logges the user in and generates JWT Token                     |
+| GET       | `/auth/verify`               | (empty)      | Verifies the users JWT token, which is **sent in the headers** |
+| GET       | `/auth/users`                | (empty)      | Returns all the users in JSON format                           |
+| GET       | `/auth/user/:userId`         | (empty)      | Returns the specified user by id                               |
+| PUT       | `/auth/user/:userId`         | JSON         | Updates the specified user by id                               |
+| DELETE    | `/auth/user/:userId`         | (empty)      | Deletes the specified user by id                               |
+| GET       | `/auth/users/rating/:userId` | (empty)      | Get the average rating for the user                            |
 
 <br>
 
@@ -119,8 +120,9 @@ The _Models_ section holds information about the data models for your database. 
 
 #### Rating Model
 
-| Field     | Data Type    | Description                        |
-| --------- | ------------ | ---------------------------------- |
-| `stars`   | _`Number`_   | Rating of meal. Required.          |
-| `comment` | _`String`_   | Comment to rating.                 |
-| `meal`    | _`ObjectId`_ | Reference to rated meal. Required. |
+| Field     | Data Type    | Description                                     |
+| --------- | ------------ | ----------------------------------------------- |
+| `stars`   | _`Number`_   | Rating of meal. Required.                       |
+| `comment` | _`String`_   | Comment to rating.                              |
+| `meal`    | _`ObjectId`_ | Reference to rated meal. Required.              |
+| `user`    | _`ObjectId`_ | Reference to user who rated the meal. Required. |

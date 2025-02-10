@@ -30,7 +30,7 @@ router.get("/:ratingId", async (req, res) => {
 router.get("/meals/:mealId", async (req, res) => {
   const { mealId } = req.params;
   try {
-    const ratings = await Rating.find();
+    const ratings = await Rating.find().populate("user");
     const ratingsMeal = ratings.filter((rating) => {
       return rating.meal.toString() === mealId;
     });

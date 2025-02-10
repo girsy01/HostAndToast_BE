@@ -12,6 +12,11 @@ const ratingSchema = new Schema(
       ref: "Meal",
       required: [true, "Meal is required."],
     },
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: [true, "User is required."],
+    },
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
