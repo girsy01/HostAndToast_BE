@@ -32,7 +32,9 @@ router.get("/:orderId", async (req, res) => {
 router.get("/user/:userId", async (req, res) => {
   const { userId } = req.params;
   try {
-    const userOrders = await Order.find({ user: userId });
+    const userOrders = await Order.find({ user: userId })
+      .populate("user")
+      .populate("meal");
     res.status(200).json(userOrders);
   } catch (error) {
     console.log("Error getting the orders:", error);
