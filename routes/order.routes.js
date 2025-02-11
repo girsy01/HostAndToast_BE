@@ -1,5 +1,6 @@
 const Order = require("../models/Order.model");
 const Meal = require("../models/Meal.model");
+const { default: mongoose } = require("mongoose");
 
 const router = require("express").Router();
 
@@ -18,9 +19,7 @@ router.get("/", async (req, res) => {
 router.get("/:orderId", async (req, res) => {
   const { orderId } = req.params;
   try {
-    const order = await Order.findById(orderId)
-      .populate("user")
-      .populate("meal");
+    const order = await Order.findById(orderId).populate("user").populate("meal");
     res.status(200).json(order);
   } catch (error) {
     console.log("Error getting the order:", error);
@@ -29,12 +28,33 @@ router.get("/:orderId", async (req, res) => {
 });
 
 //get all orders for one specific user
+// router.get("/user/:userId", async (req, res) => {
+//   const { userId } = req.params;
+//   try {
+//     const userOrders = await Order.find({ user: userId })
+//       .populate("user")
+//       .populate("meal");
+//     res.status(200).json(userOrders);
+//   } catch (error) {
+//     console.log("Error getting the orders:", error);
+//     res.status(500).json({ message: "Error getting the orders." });
+//   }
+// });const mongoose = require("mongoose");
+
 router.get("/user/:userId", async (req, res) => {
   const { userId } = req.params;
+
+  // console.log("Checking userId:", userId); // Debugging log
+
+  // Validate userId before querying MongoDB
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return res.status(400).json({ error: "Invalid user ID format" });
+  }
+
   try {
-    const userOrders = await Order.find({ user: userId })
-      .populate("user")
-      .populate("meal");
+    const userOrders = await Order.find({ user: userId }).populate("user").populate("meal");
+
+    // console.log("Orders found:", userOrders);
     res.status(200).json(userOrders);
   } catch (error) {
     console.log("Error getting the orders:", error);
@@ -62,9 +82,7 @@ router.get("/chef-stats/:userId", async (req, res) => {
       return a + c.price;
     }, 0);
 
-    res
-      .status(200)
-      .json({ platesServed: platesServed, totalRevenue: totalRevenue });
+    res.status(200).json({ platesServed: platesServed, totalRevenue: totalRevenue });
   } catch (error) {
     console.log("Error getting the orders:", error);
     res.status(500).json({ message: "Error getting the orders." });
