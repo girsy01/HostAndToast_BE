@@ -19,7 +19,9 @@ router.get("/", async (req, res) => {
 router.get("/:orderId", async (req, res) => {
   const { orderId } = req.params;
   try {
-    const order = await Order.findById(orderId).populate("user").populate("meal");
+    const order = await Order.findById(orderId)
+      .populate("user")
+      .populate("meal");
     res.status(200).json(order);
   } catch (error) {
     console.log("Error getting the order:", error);
@@ -52,7 +54,10 @@ router.get("/user/:userId", async (req, res) => {
   }
 
   try {
-    const userOrders = await Order.find({ user: userId }).populate("user").populate("meal");
+    const userOrders = await Order.find({ user: userId })
+      .populate("user")
+      .populate("meal")
+      .populate("rating");
 
     // console.log("Orders found:", userOrders);
     res.status(200).json(userOrders);
@@ -82,7 +87,9 @@ router.get("/chef-stats/:userId", async (req, res) => {
       return a + c.price;
     }, 0);
 
-    res.status(200).json({ platesServed: platesServed, totalRevenue: totalRevenue });
+    res
+      .status(200)
+      .json({ platesServed: platesServed, totalRevenue: totalRevenue });
   } catch (error) {
     console.log("Error getting the orders:", error);
     res.status(500).json({ message: "Error getting the orders." });

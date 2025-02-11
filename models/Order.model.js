@@ -25,6 +25,10 @@ const orderSchema = new Schema(
       enum: ["FINISHED", "IN_PROGRESS"],
       require: true,
     },
+    rating: {
+      type: Schema.Types.ObjectId,
+      ref: "Rating",
+    },
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`

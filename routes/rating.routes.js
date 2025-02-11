@@ -1,5 +1,5 @@
 const Rating = require("../models/Rating.model");
-const Meal = require("../models/Meal.model");
+const Order = require("../models/Order.model");
 
 const router = require("express").Router();
 
@@ -52,11 +52,29 @@ router.post("", async (req, res) => {
   }
 });
 
+//create a new rating for Order
+router.post("/order/:orderId", async (req, res) => {
+  const { orderId } = req.params;
+  try {
+    const rating = await Rating.create(req.body);
+
+    //Update the order with the rating id
+    await Order.findByIdAndUpdate(orderId, { rating: rating._id });
+
+    res.status(201).json(rating);
+  } catch (error) {
+    console.log("Error creating the rating:", error);
+    res.status(500).json({ message: "Error creating the rating." });
+  }
+});
+
 //update a rating by id
 router.put("/:ratingId", async (req, res) => {
   const { ratingId } = req.params;
   try {
-    const ratingUpdated = await Rating.findByIdAndUpdate(ratingId, req.body, { new: true });
+    const ratingUpdated = await Rating.findByIdAndUpdate(ratingId, req.body, {
+      new: true,
+    });
     res.status(201).json(ratingUpdated);
   } catch (error) {
     console.log("Error updating the rating:", error);
