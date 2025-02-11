@@ -30,6 +30,9 @@ app.use("/api/meals", mealRoutes);
 const ratingRoutes = require("./routes/rating.routes");
 app.use("/api/ratings", ratingRoutes);
 
+const orderRoutes = require("./routes/order.routes");
+app.use("/api/orders", orderRoutes);
+
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
 
