@@ -108,19 +108,25 @@ router.put("/:orderId", async (req, res) => {
   }
 });
 
-//delete a order by id
+//delete an order by id
 router.delete("/:orderId", async (req, res) => {
   const { orderId } = req.params;
   try {
-    //We first update the Meal to add the no of plates
-    let meal = await Meal.findById(req.body.meal);
+    //Fetch the meal from order
+    const order = await Order.findById(orderId).populate("meal");
 
-    meal.plates = meal.plates + req.body.plates;
-    const mealUpdated = await Meal.findByIdAndUpdate(req.body.meal, meal, {
-      new: true,
-    });
-    console.log("Meal updated for order deletion", mealUpdated);
+    //Increment the available plates for the meal
+    order.meal.plates = order.meal.plates + order.plates;
+    console.log("Meal for order deletion ", order.meal._id, order.meal.plates);
+    const mealUpdated = await Meal.findByIdAndUpdate(
+      order.meal._id,
+      { plates: order.meal.plates },
+      {
+        new: true,
+      }
+    );
 
+    //Delete the order
     const deletedOrder = await Order.findByIdAndDelete(orderId);
     res.status(200).json(deletedOrder);
   } catch (error) {
