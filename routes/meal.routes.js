@@ -36,9 +36,9 @@ router.get("/:mealId", async (req, res) => {
 router.get("/user/:userId", async (req, res) => {
   const { userId } = req.params;
   try {
-    const meals = await Meal.find();
+    const meals = await Meal.find().populate("user");
     const userMeals = meals.filter((meal) => {
-      return meal.user.toString() === userId;
+      return meal.user._id.toString() === userId;
     });
     res.status(200).json(userMeals);
   } catch (error) {

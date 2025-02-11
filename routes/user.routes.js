@@ -165,6 +165,7 @@ router.delete("/users/:userId", async (req, res) => {
   }
 });
 
+//get all ratings of one user
 router.get("/users/rating/:userId", async (req, res) => {
   const { userId } = req.params;
   try {
