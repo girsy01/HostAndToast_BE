@@ -22,7 +22,7 @@ The API offers a variety of routes to work with _user_, _meal_ and _rating_ docu
 | DELETE    | `/auth/user/:userId`         | (empty)      | Deletes the specified user by id                               |
 | GET       | `/auth/users/rating/:userId` | (empty)      | Get the average rating for the user                            |
 | HTTP verb | URL                          | Request body | Action                                                         |
-| --------- | ---------------------        | ------------ | -------------------------------------------------------------- |
+| --------- | ---------------------------- | ------------ | ----------------------------------------------------------     |
 | POST      | `/auth/signup`               | JSON         | Creates a new user                                             |
 | POST      | `/auth/login`                | JSON         | Logges the user in and generates JWT Token                     |
 | GET       | `/auth/verify`               | (empty)      | Verifies the users JWT token, which is **sent in the headers** |
@@ -97,8 +97,6 @@ The API offers a variety of routes to work with _user_, _meal_ and _rating_ docu
 
 The _Models_ section holds information about the data models for your database. It outlines the structure of the documents in the database, providing you with a clear understanding of how your data should be organized.
 
-<br>
-
 #### User model
 
 | field         | data type    | description                                 |
@@ -111,8 +109,6 @@ The _Models_ section holds information about the data models for your database. 
 | `description` | _`String`_   | Description of user.                        |
 | `specialty`   | _`String`_   | Specialty in cooking of user.               |
 
-<br>
-
 #### Address Model
 
 | Field         | Data Type  | Description                                     |
@@ -120,8 +116,6 @@ The _Models_ section holds information about the data models for your database. 
 | `displayName` | _`String`_ | Display name coming from leaflet api. Required. |
 | `long`        | _`Number`_ | Longitude of Location.                          |
 | `lat`         | _`Number`_ | Latitude of Location                            |
-
-<br>
 
 #### Meal Model
 
@@ -138,8 +132,6 @@ The _Models_ section holds information about the data models for your database. 
 | `user`         | _`ObjectId`_         | Reference to user. Required.        |
 | `imageUrl`     | _`Array`_ of Strings | URL of image.                       |
 | `price`        | _`Number`_           | Price of the meal.                  |
-
-<br>
 
 #### Rating Model
 

@@ -7,7 +7,9 @@ const router = require("express").Router();
 //get all Orders
 router.get("/", async (req, res) => {
   try {
-    const orders = await Order.find().populate("user").populate("meal");
+    const orders = await Order.find()
+      .populate("user") // Populate user details
+      .populate("meal"); // Populate meal details
     res.status(200).json(orders);
   } catch (error) {
     console.log("Error getting all orders:", error);
@@ -19,13 +21,29 @@ router.get("/", async (req, res) => {
 router.get("/:orderId", async (req, res) => {
   const { orderId } = req.params;
   try {
-    const order = await Order.findById(orderId).populate("user").populate("meal");
+    const order = await Order.findById(orderId)
+      .populate("user") // Populate user details
+      .populate("meal"); // Populate meal details
     res.status(200).json(order);
   } catch (error) {
     console.log("Error getting the order:", error);
     res.status(500).json({ message: "Error getting the order." });
   }
 });
+
+//get all orders for one specific user
+// router.get("/user/:userId", async (req, res) => {
+//   const { userId } = req.params;
+//   try {
+//     const userOrders = await Order.find({ user: userId })
+//       .populate("user")
+//       .populate("meal");
+//     res.status(200).json(userOrders);
+//   } catch (error) {
+//     console.log("Error getting the orders:", error);
+//     res.status(500).json({ message: "Error getting the orders." });
+//   }
+// });const mongoose = require("mongoose");
 
 //get all orders for one specific user
 router.get("/user/:userId", async (req, res) => {
@@ -39,7 +57,16 @@ router.get("/user/:userId", async (req, res) => {
   }
 
   try {
-    const userOrders = await Order.find({ user: userId }).populate("user").populate("meal");
+    const userOrders = await Order.find({ user: userId })
+      .populate("user") // Populate user details
+      .populate({
+        path: "meal",
+        populate: {
+          path: "user", // Populate the user who created the meal
+          populate: { path: "address" }, // Populate the address of user who created the meal
+        },
+      })
+      .populate("rating"); // Populate order rating
 
     // console.log("Orders found:", userOrders);
     res.status(200).json(userOrders);
@@ -118,7 +145,7 @@ router.delete("/:orderId", async (req, res) => {
   const { orderId } = req.params;
   try {
     //Fetch the meal from order
-    const order = await Order.findById(orderId).populate("meal");
+    const order = await Order.findById(orderId).populate("meal"); // Populate meal details
 
     //Increment the available plates for the meal
     order.meal.plates = order.meal.plates + order.plates;

@@ -1,5 +1,7 @@
 const Meal = require("../models/Meal.model");
 const User = require("../models/User.model");
+const Order = require("../models/Order.model");
+const Rating = require("../models/Rating.model");
 
 const router = require("express").Router();
 
@@ -61,11 +63,57 @@ router.get("/:mealId", async (req, res) => {
 router.get("/user/:userId", async (req, res) => {
   const { userId } = req.params;
   try {
-    const meals = await Meal.find().populate("user");
-    const userMeals = meals.filter((meal) => {
-      return meal.user._id.toString() === userId;
+    const userMeals = await Meal.find({ user: userId }).lean();
+    if (userMeals.length === 0) {
+      return res.status(200).json(userMeals);
+    }
+
+    // Extract meal IDs to add more details for them
+    const userMealIds = userMeals.map((meal) => meal._id);
+
+    //Add Meal Booking Info=>
+    // Fetch all meals by the chef
+    const mealOrders = await Order.find({
+      meal: { $in: userMealIds },
+      status: "IN_PROGRESS",
     });
-    res.status(200).json(userMeals);
+
+    userMeals.forEach((meal) => {
+      const orders = mealOrders.filter((order) => {
+        return order.meal.toString() === meal._id.toString();
+      });
+
+      if (orders.length > 0) {
+        meal.booked = orders.length;
+      } else {
+        meal.booked = 0;
+      }
+    });
+
+    //Add Meal Rating Info=>
+    //Fetch all the meal ratings of the user meals
+    const mealRatings = await Rating.find({
+      meal: { $in: userMealIds },
+    });
+
+    //Avg the rating for every meal
+    const userMealsDetails = userMeals.map((meal) => {
+      const ratings = mealRatings.filter((rating) => {
+        return rating.meal.toString() === meal._id.toString();
+      });
+
+      if (ratings.length > 0) {
+        const totalRating = ratings.reduce((a, c) => a + c.stars, 0);
+        return {
+          ...meal,
+          mealRating: totalRating / ratings.length,
+        };
+      } else {
+        return { ...meal, mealRating: 0 };
+      }
+    });
+
+    res.status(200).json(userMealsDetails);
   } catch (error) {
     console.log("Error getting the meals:", error);
     res.status(500).json({ message: "Error getting the meals." });
