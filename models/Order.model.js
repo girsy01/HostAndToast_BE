@@ -22,7 +22,7 @@ const orderSchema = new Schema(
     },
     status: {
       type: String,
-      enum: ["FINISHED", "IN_PROGRESS"],
+      enum: ["FINISHED", "PAID", "RESERVED"],
       require: true,
     },
   },

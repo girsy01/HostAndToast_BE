@@ -28,19 +28,6 @@ router.get("/:orderId", async (req, res) => {
 });
 
 //get all orders for one specific user
-// router.get("/user/:userId", async (req, res) => {
-//   const { userId } = req.params;
-//   try {
-//     const userOrders = await Order.find({ user: userId })
-//       .populate("user")
-//       .populate("meal");
-//     res.status(200).json(userOrders);
-//   } catch (error) {
-//     console.log("Error getting the orders:", error);
-//     res.status(500).json({ message: "Error getting the orders." });
-//   }
-// });const mongoose = require("mongoose");
-
 router.get("/user/:userId", async (req, res) => {
   const { userId } = req.params;
 
@@ -102,7 +89,7 @@ router.post("", async (req, res) => {
     });
     console.log("Meal updated for order creation", mealUpdated);
 
-    req.body.status = "IN_PROGRESS"; //New Order status
+    req.body.status = "RESERVED"; //New Order status
 
     const order = await Order.create(req.body);
     res.status(201).json(order);
