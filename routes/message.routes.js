@@ -4,7 +4,7 @@ const User = require("../models/User.model");
 const router = require("express").Router();
 
 //get all messages for a user by id
-router.get("/:userId", async (req, res) => {
+router.get("/user/:userId", async (req, res) => {
   const { userId } = req.params;
   try {
     //CHECK
