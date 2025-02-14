@@ -76,7 +76,7 @@ router.post("/login", async (req, res) => {
           expiresIn: "8h",
         }
       );
-      console.log("authToken:", authToken);
+      // console.log("authToken:", authToken);
       res.status(200).json({ message: "Successful login.", authToken });
     } else {
       res.status(403).json({ message: "Unable to authenticate the user." });
@@ -89,7 +89,7 @@ router.post("/login", async (req, res) => {
 
 //route to verify the token
 router.get("/verify", isAuthenticated, (req, res) => {
-  console.log("req.payload", req.payload);
+  // console.log("req.payload", req.payload);
   res.status(200).json(req.payload);
 });
 

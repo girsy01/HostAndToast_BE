@@ -6,10 +6,14 @@ const router = require("express").Router();
 //get all messages for a user by id
 router.get("/user/:userId", async (req, res) => {
   const { userId } = req.params;
+  // console.log("inside the get messages route");
   try {
     //CHECK
     const messages = await Message.find({
-      $or: { senderId: userId, recieverId: userId },
+      $or: [
+        { senderId: userId }, // Condition for senderId
+        { receiverId: userId }, // Condition for receiverId
+      ],
     })
       .populate("senderId")
       .populate("receiverId");

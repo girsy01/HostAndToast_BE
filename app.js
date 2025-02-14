@@ -1,20 +1,13 @@
-// ℹ️ Gets access to environment variables/settings
-// https://www.npmjs.com/package/dotenv
 require("dotenv").config();
 
-// ℹ️ Connects to the database
-require("./db");
+require("./db"); // Connects to database
 
-// Handles http requests (express is node js framework)
-// https://www.npmjs.com/package/express
 const express = require("express");
+const { io, app, server } = require("./socket"); // Use require instead of import
 
-const app = express();
+require("./config")(app); // Middleware setup
 
-// ℹ️ This function is getting exported from the config folder. It runs most pieces of middleware
-require("./config")(app);
-
-// 👇 Start handling routes here
+// Define routes
 const indexRoutes = require("./routes/index.routes");
 app.use("/api", indexRoutes);
 
@@ -39,7 +32,6 @@ app.use("/api/payment", paymentRoutes);
 const messageRoutes = require("./routes/message.routes");
 app.use("/api/messages", messageRoutes);
 
-// ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
-require("./error-handling")(app);
+require("./error-handling")(app); // Error handling
 
-module.exports = app;
+module.exports = server; // Export server instead of app
