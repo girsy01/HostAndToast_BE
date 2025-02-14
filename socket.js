@@ -3,11 +3,13 @@ const http = require("http");
 const User = require("./models/User.model"); // Import the User model
 const Message = require("./models/Message.model"); // Import the Message model
 
+const FRONTEND_URL = process.env.ORIGIN || "http://localhost:5173";
+
 const app = require("express")();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173", // Adjust as necessary
+    origin: [FRONTEND_URL],
   },
 });
 
