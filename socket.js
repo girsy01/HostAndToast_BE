@@ -13,32 +13,46 @@ const io = new Server(server, {
   },
 });
 
+const users = new Map(); // Store userId -> socketId mappings
+
 io.on("connection", (socket) => {
-  console.log("a user connected", socket.id);
+  console.log("A user connected", socket.id);
+
+  // Listen for a custom event to associate user ID with socket ID
+  socket.on("registerUser", (userId) => {
+    users.set(userId, socket.id); // Map user ID to socket ID
+  });
 
   socket.on("sendMessage", async (message) => {
     try {
-      // Retrieve sender and receiver user details
       const sender = await User.findById(message.senderId);
       const receiver = await User.findById(message.receiverId);
 
-      // Create a new message and populate sender and receiver user details
       const newMessage = await Message.create({
         ...message,
-        senderId: sender, // Attach full sender object
-        receiverId: receiver, // Attach full receiver object
+        senderId: sender,
+        receiverId: receiver,
       });
 
-      // Emit the message to the recipient and the sender
-      socket.to(message.receiverId).emit("receiveMessage", newMessage);
-      socket.emit("receiveMessage", newMessage); // Optionally, send back to the sender
+      const receiverSocketId = users.get(message.receiverId); // Get receiver's socket ID
+      if (receiverSocketId) {
+        io.to(receiverSocketId).emit("receiveMessage", newMessage); // Emit directly to the receiver
+      }
+
+      socket.emit("receiveMessage", newMessage); // Send back to sender
     } catch (error) {
       console.log("Error saving the message:", error);
     }
   });
 
+  // Remove user from the map when they disconnect
   socket.on("disconnect", () => {
-    console.log("user disconnected", socket.id);
+    users.forEach((socketId, userId) => {
+      if (socketId === socket.id) {
+        users.delete(userId);
+      }
+    });
+    console.log("User disconnected", socket.id);
   });
 });
 
