@@ -4,6 +4,7 @@ const Stripe = require("stripe");
 require("dotenv").config();
 
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+const FRONTEND_URL = process.env.ORIGIN || "http://localhost:5173";
 
 router.post("/create-checkout-session", async (req, res) => {
   try {
@@ -25,8 +26,8 @@ router.post("/create-checkout-session", async (req, res) => {
       payment_method_types: ["card"],
       line_items,
       mode: "payment",
-      success_url: "http://localhost:5173/success",
-      cancel_url: "http://localhost:5173/cancel",
+      success_url: ` ${FRONTEND_URL}/success`,
+      cancel_url: ` ${FRONTEND_URL}/cancel`,
     });
 
     // console.log("session", session);

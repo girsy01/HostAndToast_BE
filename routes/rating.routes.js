@@ -32,9 +32,7 @@ router.get("/meals/:mealId", async (req, res) => {
   try {
     const ratings = await Rating.find().populate("user").populate("meal");
     const ratingsMeal = ratings.filter((rating) => {
-      // console.log("Meal", rating.meal);
-      return rating.meal._id === mealId;
-      // return true;
+      return rating.meal._id.toString() === mealId;
     });
     res.status(200).json(ratingsMeal);
   } catch (error) {
