@@ -25,15 +25,18 @@ io.on("connection", (socket) => {
 
   socket.on("sendMessage", async (message) => {
     try {
+      // Retrieve sender and receiver user details
       const sender = await User.findById(message.senderId);
       const receiver = await User.findById(message.receiverId);
 
+      // Create a new message and populate sender and receiver user details
       const newMessage = await Message.create({
         ...message,
         senderId: sender,
         receiverId: receiver,
       });
 
+      // Emit the message to the recipient and the sender
       const receiverSocketId = users.get(message.receiverId); // Get receiver's socket ID
       if (receiverSocketId) {
         io.to(receiverSocketId).emit("receiveMessage", newMessage); // Emit directly to the receiver
