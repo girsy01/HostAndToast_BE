@@ -37,4 +37,34 @@ router.post("/send", async (req, res) => {
   }
 });
 
+//create a Empty message between the users if doesn't exist already
+router.post("/empty", async (req, res) => {
+  try {
+    //1. CHECK if any old communication exists between the users
+    const messages = await Message.find({
+      $or: [
+        {
+          senderId: req.body.senderId,
+          receiverId: req.body.receiverId,
+        },
+        {
+          senderId: req.body.receiverId,
+          receiverId: req.body.senderId,
+        },
+      ],
+    });
+
+    if (!messages || messages.length === 0) {
+      req.body.text = "";
+      const message = await Message.create(req.body);
+      res.status(201).json(message);
+    } else {
+      res.status(200).json({ message: "Old communication exists" });
+    }
+  } catch (error) {
+    console.log("Error creating the message:", error);
+    res.status(500).json({ message: "Error creating the message." });
+  }
+});
+
 module.exports = router;
