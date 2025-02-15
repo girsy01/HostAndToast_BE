@@ -3,14 +3,20 @@ const http = require("http");
 const User = require("./models/User.model"); // Import the User model
 const Message = require("./models/Message.model"); // Import the Message model
 
-const FRONTEND_URL = process.env.ORIGIN || "http://localhost:5173";
+setInterval(() => {
+  io.emit("ping", { message: "Keep WebSocket Alive" });
+}, 25000); // Every 25 seconds
 
+const FRONTEND_URL = process.env.ORIGIN || "http://localhost:5173";
 const app = require("express")();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: [FRONTEND_URL],
+    origin: [FRONTEND_URL], // Ensure frontend URL is correct
+    methods: ["GET", "POST"],
+    credentials: true,
   },
+  transports: ["websocket", "polling"], // Ensure WebSocket transport works
 });
 
 const users = new Map(); // Store userId -> socketId mappings
@@ -20,7 +26,12 @@ io.on("connection", (socket) => {
 
   // Listen for a custom event to associate user ID with socket ID
   socket.on("registerUser", (userId) => {
-    users.set(userId, socket.id); // Map user ID to socket ID
+    if (userId) {
+      users.set(userId, socket.id);
+      console.log(`User ${userId} registered with socket ID ${socket.id}`);
+    } else {
+      console.log("registerUser: Invalid userId received");
+    }
   });
 
   socket.on("sendMessage", async (message) => {
@@ -53,9 +64,9 @@ io.on("connection", (socket) => {
     users.forEach((socketId, userId) => {
       if (socketId === socket.id) {
         users.delete(userId);
+        console.log(`User ${userId} disconnected`);
       }
     });
-    console.log("User disconnected", socket.id);
   });
 });
 
