@@ -1,5 +1,6 @@
 const Order = require("../models/Order.model");
 const Meal = require("../models/Meal.model");
+const Message = require("../models/Message.model");
 const { default: mongoose } = require("mongoose");
 
 const router = require("express").Router();
@@ -96,7 +97,9 @@ router.get("/chef-stats/:userId", async (req, res) => {
       return a + c.price;
     }, 0);
 
-    res.status(200).json({ platesServed: platesServed, totalRevenue: totalRevenue });
+    res
+      .status(200)
+      .json({ platesServed: platesServed, totalRevenue: totalRevenue });
   } catch (error) {
     console.log("Error getting the orders:", error);
     res.status(500).json({ message: "Error getting the orders." });
@@ -106,9 +109,36 @@ router.get("/chef-stats/:userId", async (req, res) => {
 //create a new order
 router.post("", async (req, res) => {
   try {
-    //We first update the Meal to reduce the no of plates
-    let meal = await Meal.findById(req.body.meal);
+    let meal = await Meal.findById(req.body.meal).populate("user");
 
+    //1. Create communication between the Customer & the Chef if not already
+
+    //1.01. CHECK if any old communication exists
+    const messages = await Message.find({
+      $or: [
+        {
+          senderId: req.body.user, //Customer sent a message to Chef
+          receiverId: meal.user._id, //Chef
+        },
+        {
+          senderId: meal.user._id, //Chef sent a message to Customer
+          receiverId: req.body.user, //Customer
+        },
+      ],
+    });
+
+    if (!messages || messages.length === 0) {
+      //1.02. No old communication exists. Create 1st communication
+      message = await Message.create({
+        senderId: req.body.user,
+        receiverId: meal.user._id,
+        text: "",
+      });
+
+      console.log("New communivation created message", message);
+    }
+
+    //2. We update the Meal to reduce the no of plates
     const leftOverPlates = meal.plates - req.body.plates;
     meal.plates = leftOverPlates > 0 ? leftOverPlates : 0;
     const mealUpdated = await Meal.findByIdAndUpdate(req.body.meal, meal, {
@@ -118,7 +148,9 @@ router.post("", async (req, res) => {
 
     req.body.status = "RESERVED"; //New Order status
 
+    //3. Create the order for the Customer
     const order = await Order.create(req.body);
+
     res.status(201).json(order);
   } catch (error) {
     console.log("Error creating the order:", error);
