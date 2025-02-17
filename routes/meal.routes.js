@@ -149,6 +149,14 @@ router.put("/:mealId", async (req, res) => {
 router.delete("/:mealId", async (req, res) => {
   const { mealId } = req.params;
   try {
+    /* Delete all ratings for the meal*/
+    await Rating.deleteMany({ meal: mealId });
+    console.log("Ratings for meal deleted");
+
+    /* Delete all orders for the meal*/
+    await Order.deleteMany({ meal: mealId });
+    console.log("Orders for meal deleted");
+
     const deletedMeal = await Meal.findByIdAndDelete(mealId);
     res.status(200).json(deletedMeal);
   } catch (error) {

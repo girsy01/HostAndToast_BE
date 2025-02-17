@@ -1,6 +1,7 @@
 const Order = require("../models/Order.model");
 const Meal = require("../models/Meal.model");
 const Message = require("../models/Message.model");
+const Rating = require("../models/Rating.model");
 const { default: mongoose } = require("mongoose");
 
 const router = require("express").Router();
@@ -206,6 +207,12 @@ router.delete("/:orderId", async (req, res) => {
         new: true,
       }
     );
+
+    if (order.rating) {
+      /* Delete all ratings for the meal*/
+      await Rating.findByIdAndDelete(order.rating);
+      console.log("Rating for order deleted", order.rating);
+    }
 
     //Delete the order
     const deletedOrder = await Order.findByIdAndDelete(orderId);
