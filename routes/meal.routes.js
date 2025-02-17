@@ -75,7 +75,7 @@ router.get("/user/:userId", async (req, res) => {
     // Fetch all meals by the chef
     const mealOrders = await Order.find({
       meal: { $in: userMealIds },
-      status: "IN_PROGRESS",
+      status: "PAID",
     });
 
     userMeals.forEach((meal) => {

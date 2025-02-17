@@ -106,6 +106,23 @@ router.get("/chef-stats/:userId", async (req, res) => {
   }
 });
 
+//get all PAID customers for one specific meal
+router.get("/customer/:mealId", async (req, res) => {
+  const { mealId } = req.params;
+
+  try {
+    const userOrders = await Order.find({
+      meal: mealId,
+      status: "PAID",
+    }).populate("user");
+
+    res.status(200).json(userOrders);
+  } catch (error) {
+    console.log("Error getting the meal order details:", error);
+    res.status(500).json({ message: "Error getting the meal order details." });
+  }
+});
+
 //create a new order
 router.post("", async (req, res) => {
   try {
