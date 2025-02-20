@@ -47,6 +47,32 @@ router.get("/active", async (req, res) => {
   }
 });
 
+//get all active meals for the user
+router.get("/active/user/:userId", async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const meals = await Meal.find({ user: userId }).populate({
+      path: "user",
+      populate: {
+        path: "address", // Assuming 'address' is a reference in the User model
+        model: "Address", // Replace with the actual model name if needed
+      },
+    });
+
+    const currentTime = new Date();
+    //Filter all Active Meals on pickup time & plates available
+    const activeMeals = meals.filter((meal) => {
+      const pickupTime = new Date(meal.pickupTime); // Convert pickupTime to a Date object
+      return pickupTime >= currentTime && meal.plates > 0;
+    });
+
+    res.status(200).json(activeMeals);
+  } catch (error) {
+    console.log("Error getting all meals:", error);
+    res.status(500).json({ message: "Error getting all meals." });
+  }
+});
+
 //get one meal by id
 router.get("/:mealId", async (req, res) => {
   const { mealId } = req.params;
