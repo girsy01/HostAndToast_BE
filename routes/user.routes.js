@@ -14,12 +14,14 @@ router.post("/signup", async (req, res) => {
   const { username, email, password } = req.body;
 
   if (email === "" || password === "" || username === "") {
-    res.status(400).json({ message: "Provide email, password and username." });
+    return res
+      .status(400)
+      .json({ message: "Provide email, password and username." });
   }
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   if (!emailRegex.test(email)) {
-    res.status(400).json({ message: "Provide a valid email address." });
+    return res.status(400).json({ message: "Provide a valid email address." });
   }
 
   //commented out for making simple passwords possible during development
@@ -44,7 +46,9 @@ router.post("/signup", async (req, res) => {
       username,
       password: hashedPassword,
     });
-    res.status(201).json({ message: "User created", user: { username, email } });
+    res
+      .status(201)
+      .json({ message: "User created", user: { username, email } });
   } catch (error) {
     console.log("Error when creating user:", error);
     res.status(500).json({ message: "Error creating user." });
@@ -55,32 +59,32 @@ router.post("/signup", async (req, res) => {
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
-  if (email === "" || password === "") {
-    res.status(400).json({ message: "Provide email and password." });
-    return;
+  if (!email || !password) {
+    return res.status(400).json({ message: "Provide email and password." });
   }
 
   try {
     const foundUser = await User.findOne({ email });
     if (!foundUser) {
-      res.status(403).json({ message: "Invalid credentials." });
+      return res.status(403).json({ message: "Invalid credentials." });
     }
     const passwordCorrect = bcrypt.compareSync(password, foundUser.password);
 
-    if (passwordCorrect) {
-      const authToken = jwt.sign(
-        { _id: foundUser._id, username: foundUser.username },
-        process.env.TOKEN_SECRET,
-        {
-          algorithm: "HS256",
-          expiresIn: "8h",
-        }
-      );
-      // console.log("authToken:", authToken);
-      res.status(200).json({ message: "Successful login.", authToken });
-    } else {
-      res.status(403).json({ message: "Unable to authenticate the user." });
+    if (!passwordCorrect) {
+      return res
+        .status(403)
+        .json({ message: "Unable to authenticate the user." }); // FIXED: Added return
     }
+
+    const authToken = jwt.sign(
+      { _id: foundUser._id, username: foundUser.username },
+      process.env.TOKEN_SECRET,
+      {
+        algorithm: "HS256",
+        expiresIn: "8h",
+      }
+    );
+    res.status(200).json({ message: "Successful login.", authToken });
   } catch (error) {
     console.log("Error logging in the user:", error);
     res.status(500).json({ message: "Error logging in the user." });
@@ -178,7 +182,8 @@ router.get("/users/rating/:userId", async (req, res) => {
       ratings.push(...ratingsOfMeal);
     }
     // console.log("ratings:", ratings);
-    const averageRating = ratings.reduce((acc, rating) => acc + rating.stars, 0) / ratings.length;
+    const averageRating =
+      ratings.reduce((acc, rating) => acc + rating.stars, 0) / ratings.length;
     const numberOfRatings = ratings.length;
     // console.log("averageRating:", averageRating);
     res.status(200).json({ averageRating, numberOfRatings });
