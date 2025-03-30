@@ -116,7 +116,7 @@ router.get("/user/:userId", async (req, res) => {
       }
     });
 
-    //Add Meal Rating Info=>
+    //Add Meal Rating Info =>
     //Fetch all the meal ratings of the user meals
     const mealRatings = await Rating.find({
       meal: { $in: userMealIds },
